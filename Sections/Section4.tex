@@ -1,0 +1,22 @@
+%!TEX root = /Users/kevin/SkyDrive/KTH Work/Period 4 2014/GNSS/Labs/L3 - Computation of receiver position from code and phase measurements/Report/Lab 3.tex
+
+
+\section{Analysis and Discussion} % (fold)
+\label{sec:analysis_and_discussion}
+% In this part you should discuss your results by, for example, considering the following questions:
+\begin{itemize}
+	\item Are the results reasonable? Compare the results with your expectations.
+	
+	Yes the results are reasonable.  The final position of the receiver is very close to the approximate position and this is shown in Table~\ref{tab:receiverCoordinates}.  We also get very consistent results if we compute the same calculations for different epochs.
+	\item Can we draw any conclusion/implications from the results?  
+	
+	We can conclude that the approximate coordinates are very close to the true receiver position, even though we did not factor in ionospheric and tropospheric effects.  
+	\item Are results reliable and accurate?
+	
+	I believe the results are reliable and accurate because the $\sigma$ value is very small for all x,y,z and all 11 satellites were taken into account.  But the least squares method can give poor results if there are any outliers or the errors aren't Gaussian distributed.\cite{Garcia:1999:NMP:554354}  Looking at other epochs in the SPP Results, we can see that they also give approximately the same position for the receiver.
+	\item Would it have been more appropriate to use another method? Does the method need to be further developed?
+	
+	I think it is only necessary to further develop this method if you needed a higher degree of accuracy.  This method could be further developed to take into account the ionospheric and tropospheric effects and factor in all the given epochs for the satellites.  I think it could me more appropriate to use the difference method is best used when you have more satellites and tropospheric and ionospheric effects are cancelled out in the equations.  This means our final solution should be more accurate using the difference method.
+\end{itemize}
+
+% section analysis_and_discussion (end)
