@@ -1,83 +1,155 @@
-%!TEX root = /Users/kevin/SkyDrive/KTH Work/Period 4 2014/GNSS/Labs/L3 - Computation of receiver position from code and phase measurements/Report/Lab 3.tex
 
+
+%!TEX root = /Users/kevin/SkyDrive/KTH Work/Period 4 2014/GNSS/Labs/L3 - Computation of receiver position from code and phase measurements/Report/Lab 3.tex
 \section{Methodology} 
 
 % (fold)
 \label{sec:methodology}
 
 % Describe the methods and instruments used to solve the problem. 
-Matlab was used to solve for the following parameters and all of the following equations were taken from the technical report: GPS single point positioning algorithm.\cite{milanGPS} 
+Matlab was used to solve for the following parameters and all of the following equations were taken from the technical report: Relative positioning with GPS.\cite{milanGPS} 
 
-The steps and equations from this algorithm are documented in the Matlab code, Section~\ref{sec:main_code}. The pseudo ranges and navigation messages are used to calculate a more precise position of the receiver. The shift in position is a measure of the time for the signal to travel from satellite to receiver. 
-
-This time traveled by the signal multiplied by the speed of light is the pseudo range. 
-
-All the satellites were used in this calculation in order to get the best possible approximation of the receiver coordinates. Since we will be using least-squares method to solve for the parameters, the more independent equations we have, the better the approximation will be. 
-
-First, the signal propagation time was calculated using, 
-\begin{equation*}
-	\Delta t_A^s = P_A^s(\tilde{t_A})/c 
-\end{equation*}
-which was then used to calculate the nominal transmission time, 
-\begin{equation*}
-	\tilde{t}^s = \tilde{t_A} - P_A^s(\tilde{t_A})/c 
-\end{equation*}
-where $\tilde{t_A}$ is the nominal time of signal reception by the receiver. For this lab report, $\tilde{t_A}=90840~$seconds, or 2 days, 1 hour, and 14 minutes. The weeks in the year was omitted because the difference between epoch times was less than a day and therefore would have cancelled out.
-
-Next the satellite clock correction, $\delta t_{L1}^s$, was computed using equations, 
-\begin{align*}
-	\delta t_{L1}^s &= \Delta t_{SV}-T_{GD} \\
-	\Delta t_{SV} &= a_{f0} + a_{f1}(\tilde{t}^s - t_{oc}) + a_{f2}(\tilde{t}^s - t_{oc})^2 + \Delta t_r 
-\end{align*}
-but the relativistic correction, $\Delta t_r = Fe\sqrt{A} \sin(E_k)$ was neglected until the eccentric anomaly and satellite coordinates were computed. Next, the system time of signal transmission, $t^s$ was calculated using the satellite clock correction. The eccentric anomaly was calculated using Kepler's equation, 
-\begin{equation*}
-	E_k = M_k + e \sin(E_k) 
-\end{equation*}
-and the solution was iterated until convergence. The relativistic correction is now calculated and $t^s$ is corrected in order to compute the satellite coordinates at that time given by the equations, 
+The steps and equations from this algorithm are documented in the Matlab code, Section~\ref{sec:main_code}. The pseudo ranges and phase observations for REF and ROV are given from the beginning in this lab. Two GPS receivers measured the pseudoranges to each satellite at the same time. Of the two points, we used point A as REF and B as ROV. The first step is to synchronize all the clocks for each satellite so we can combine the results. The equation used to synchronize the clocks, 
 \begin{align}
-	X^s &=x'_k \cos \Omega_k -y'_k \cos i_k \sin \Omega_k \nonumber \\
-	Y^s &=x'_k \sin \Omega_k +y'_k \cos i_k \cos \Omega_k \nonumber \\
-	Z^s &= y'_k \sin i_k \nonumber 
+	P_A^s &= P_A^s(t_A) = P_A^s(\tilde{t}_A) + \dot{\rho}_A^s(\tilde{t}_A)\delta \hat{t}_A \label{eq:14a} \\
+	\lambda \varphi_A^s &= \lambda \varphi_A^s(t_A) = \lambda \varphi_A^s(\tilde{t}_A) + \dot{\rho}_A^s(\tilde{t}_A)\delta \hat{t}_A \label{eq:14b} 
 \end{align}
-Now that the satellite coordinates have been calculated, the satellite clock correction is corrected again to include the relativistic correction, $\Delta t_r$. Now the approximate distance of the satellite is calculated using the equation, 
-\begin{equation*}
-	\rho _{\text{A0}}^s\left(\tilde{t}_A\right) = \sqrt{\left( X^s-X_{\text{A0}}+\dot{\Omega}_eY_{\text{A0}} \text{$\Delta $t}^s \right)^2+\left( Y^s-Y_{\text{A0}}-\dot{\Omega}_eX_{\text{A0}} \text{$\Delta $t}^s \right)^2+\left( Z^s-Z_{\text{A0}} \right)^2} 
-\end{equation*}
 
-The calculation of these parameters is done for all satellites we are interested in. Since we are computing four unknown parameters, the satellite lower limit is also four. More than four should only increase our accuracy assuming they aren't outliers. The result will be used to get more accurate coordinates for the receiver. 
+% (eq:14a)
+where A is REF or ROV. Next, the ionospheric and tropospheric effects are eliminated common to both stations. The single differences are, 
+\begin{align}
+	\lambda \varphi_{AB}^s &= \lambda \varphi_{B}^s - \lambda \varphi_{A}^s = \rho_{AB}^s + c \delta t_{AB} + \lambda N_{AB}^s \label{eq:15a} \\
+	P_{AB}^s &= P_B^s - P_A^s = \rho_{AB}^s + c \delta t_{AB} \label{eq:15b} 
+\end{align}
 
-The least squares method is used to calculate the corrections to the receiver position and system time of signal reception. Using values from different satellites, we solve, 
-\begin{equation*}
-	\mathbf{L} - \mathbf{v} = \mathbf{AX} 
-\end{equation*}
-where $\mathbf{v}$ is a vector of unknown residuals, and the vector $\mathbf{X}$ is solved for with the LSQ solution, 
-\begin{equation*}
-	\mathbf{X} = (\mathbf{A}^\text{T} \mathbf{A})^{-1} \mathbf{A}^\text{T} \mathbf{L} = [\Delta X~~\Delta Y~~\Delta Z~~\text{c} \delta \text{t}_\text{A} ]^\text{T}
-\end{equation*}
-where $\mathbf{A}$ and $\mathbf{L}$ represent 
-\begin{align*}
-	\mathbf{A} &= 
+% (eq:15a)
+which are then taken to form double differences and leads to the most important feature of this method: cancellation of the receiver clock errors. The double difference equations are computed by choosing a reference satellite and subtracting the phase and code observations of each satellite from it. Satellite 20 was chosen to be the reference in this lab. Double differences from reference satellite 20 is given from, 
+\begin{align}
+	\lambda \varphi_{AB}^{st} &= \lambda \varphi_{B}^{t} - \lambda \varphi_{A}^{s} = \rho_{AB}^{st} + \lambda N_{AB}^{st} \label{eq:18a} \\
+	P_{AB}^{st} &= P_B^t - P_A^s = \rho_{AB}^{st} \label{eq:18b} 
+\end{align}
+Linearizing Equation~\eqref{eq:18a} and \eqref{eq:18b} and converting to matrix form, we get
+\begin{align}
+	L &= Ax \label{eq:21a} \\
+	L &=
 	\begin{bmatrix}
-		a_x^{(1)} & a_y^{(1)} & a_z^{(1)} &1 \\
-		\vdots &\vdots &\vdots &\vdots \\
-		a_x^{(n)} & a_y^{(n)} & a_z^{(n)} &1 \\
-	\end{bmatrix}
-	\\
-	\mathbf{L} &= 
-	\begin{bmatrix}
-		P_A(\tilde{t}_A)-\rho_{A0}^{(1)} + c \delta t_{L1}^1\\
-		\vdots \\
-		P_A(\tilde{t}_A)-\rho_{A0}^{(n)} + c \delta t_{L1}^n\\
-	\end{bmatrix}
-\end{align*}
-
-The new estimated coordinates are computed by adding onto the approximate receiver position given in the observation file. 
-\begin{align*}
-	X_A &= X_{A0} + \Delta X \\
-	Y_A &= Y_{A0} + \Delta Y \\
-	Z_A &= Z_{A0} + \Delta Z \\
-\end{align*}
-
-Now the calculation of $\rho _{\text{A0}}^s\left(\tilde{t}_A\right)$, $\mathbf{L}$, $\mathbf{A}$ is done again using the updated receiver coordinates until the solution has converged.  We say that the solution has converged if the following condition is fulfilled: $|(\text{v}^{\text{T}} \text{v})_i - (\text{v}^{\text{T}} \text{v})_{i-1}|< 1e-5$.  The results fulfilling the convergence condition are given in Table~\ref{tab:receiverCoordinates}.
+		\lambda \varphi_{AB}^{20,4}-\rho_{AB,0}^{20,4} \\[6pt]
+		\lambda \varphi_{AB}^{20,5}-\rho_{AB,0}^{20,5} \\[6pt]
+		\lambda \varphi_{AB}^{20,6}-\rho_{AB,0}^{20,6} \\[6pt]
+		\lambda \varphi_{AB}^{20,24}-\rho_{AB,0}^{20,24} \\[6pt]
+		\lambda \varphi_{AB}^{20,25}-\rho_{AB,0}^{20,25} \\[6pt]
+		P_{AB,1}^{20,4}-\rho_{AB,0}^{20,4} \\[6pt]
+		P_{AB,1}^{20,5}-\rho_{AB,0}^{20,5} \\[6pt]
+		P_{AB,1}^{20,6}-\rho_{AB,0}^{20,6} \\[6pt]
+		P_{AB,1}^{20,24}-\rho_{AB,0}^{20,24} \\[6pt]
+		P_{AB,1}^{20,25}-\rho_{AB,0}^{20,25} \\
+	\end{bmatrix} \label{eq:21b}\\
+	A &= \left[\begin{matrix}
+ a_{XB}^{20,4} &  a_{YB}^{20,4} &  a_{ZB}^{20,4} & \lambda_1 &         0 &         0 &         0 &         0\\[6pt]
+ a_{XB}^{20,5} &  a_{YB}^{20,5} &  a_{ZB}^{20,5} &         0 & \lambda_1 &         0 &         0 &         0\\[6pt]
+ a_{XB}^{20,6} &  a_{YB}^{20,6} &  a_{ZB}^{20,6} &         0 &         0 & \lambda_1 &         0 &         0\\[6pt]
+a_{XB}^{20,24} & a_{YB}^{20,24} & a_{ZB}^{20,24} &         0 &         0 &         0 & \lambda_1 &         0\\[6pt]
+a_{XB}^{20,25} & a_{YB}^{20,25} & a_{ZB}^{20,25} &         0 &         0 &         0 &         0 & \lambda_1\\[6pt]
+ a_{XB}^{20,4} &  a_{YB}^{20,4} &  a_{ZB}^{20,4} &         0 &         0 &         0 &         0 &         0\\[6pt]
+ a_{XB}^{20,5} &  a_{YB}^{20,5} &  a_{ZB}^{20,5} &         0 &         0 &         0 &         0 &         0\\[6pt]
+ a_{XB}^{20,6} &  a_{YB}^{20,6} &  a_{ZB}^{20,6} &         0 &         0 &         0 &         0 &         0\\[6pt]
+a_{XB}^{20,24} & a_{YB}^{20,24} & a_{ZB}^{20,24} &         0 &         0 &         0 &         0 &         0\\[6pt]
+a_{XB}^{20,25} & a_{YB}^{20,25} & a_{ZB}^{20,25} &         0 &         0 &         0 &         0 &         0\\
+\end{matrix}\right] \label{eq:21c} \\
+x &= 
+\begin{matrix}
+	[\Delta X & \Delta Y & \Delta Z & N_{AB}^{20,4} & \cdots & N_{AB}^{20,4}]
+\end{matrix}^{\text{T}}
+\end{align}
+The LSQ of these equations is given by
+\begin{equation}
+	X = (A^T P A)^{-1} A^T P L
+	\label{eq:26}
+\end{equation} % (eq:26)
+The coefficients $a_x,~a_y,~a_z,~\rho^{pq}_{AB,0}$ are from the linearization of the topocentric distance differentiation,
+\begin{align}
+	a_x^s &= -\frac{X^s-X_{B0}}{\rho_{BO}^s}
+	\label{eq:12a} \\
+	a_y^s &= -\frac{Y^s-Y_{B0}}{\rho_{BO}^s}
+	\label{eq:12b} \\
+	a_z^s &= -\frac{Z^s-Z_{B0}}{\rho_{BO}^s}
+	\label{eq:12c} \\
+\end{align}
+Similar to the phase and code double differencing, the coefficients are also subtracted differenced with the reference satellites values, in this case, Satellite 20.  In Equation~\eqref{eq:26}, the $P$ matrix is the weight matrix and it is given in the excel file.  The $P$ matrix contains the standard deviation of the undifferenced phase and code, which for most receivers is $2~\text{mm}$ and $0.3~\text{m}$ respectively.  
+% \vspace{5cm}
+% 
+% 
+% 
+% The pseudo ranges and navigation messages are used to calculate a more precise position of the receiver. The shift in position is a measure of the time for the signal to travel from satellite to receiver. 
+% 
+% This time traveled by the signal multiplied by the speed of light is the pseudo range. 
+% 
+% All the satellites were used in this calculation in order to get the best possible approximation of the receiver coordinates. Since we will be using least-squares method to solve for the parameters, the more independent equations we have, the better the approximation will be. 
+% 
+% First, the signal propagation time was calculated using, 
+% \begin{equation*}
+% 	\Delta t_A^s = P_A^s(\tilde{t_A})/c 
+% \end{equation*}
+% which was then used to calculate the nominal transmission time, 
+% \begin{equation*}
+% 	\tilde{t}^s = \tilde{t_A} - P_A^s(\tilde{t_A})/c 
+% \end{equation*}
+% where $\tilde{t_A}$ is the nominal time of signal reception by the receiver. For this lab report, $\tilde{t_A}=90840~$seconds, or 2 days, 1 hour, and 14 minutes. The weeks in the year was omitted because the difference between epoch times was less than a day and therefore would have cancelled out.
+% 
+% Next the satellite clock correction, $\delta t_{L1}^s$, was computed using equations, 
+% \begin{align*}
+% 	\delta t_{L1}^s &= \Delta t_{SV}-T_{GD} \\
+% 	\Delta t_{SV} &= a_{f0} + a_{f1}(\tilde{t}^s - t_{oc}) + a_{f2}(\tilde{t}^s - t_{oc})^2 + \Delta t_r 
+% \end{align*}
+% but the relativistic correction, $\Delta t_r = Fe\sqrt{A} \sin(E_k)$ was neglected until the eccentric anomaly and satellite coordinates were computed. Next, the system time of signal transmission, $t^s$ was calculated using the satellite clock correction. The eccentric anomaly was calculated using Kepler's equation, 
+% \begin{equation*}
+% 	E_k = M_k + e \sin(E_k) 
+% \end{equation*}
+% and the solution was iterated until convergence. The relativistic correction is now calculated and $t^s$ is corrected in order to compute the satellite coordinates at that time given by the equations, 
+% \begin{align}
+% 	X^s &=x'_k \cos \Omega_k -y'_k \cos i_k \sin \Omega_k \nonumber \\
+% 	Y^s &=x'_k \sin \Omega_k +y'_k \cos i_k \cos \Omega_k \nonumber \\
+% 	Z^s &= y'_k \sin i_k \nonumber 
+% \end{align}
+% Now that the satellite coordinates have been calculated, the satellite clock correction is corrected again to include the relativistic correction, $\Delta t_r$. Now the approximate distance of the satellite is calculated using the equation, 
+% \begin{equation*}
+% 	\rho _{\text{A0}}^s\left(\tilde{t}_A\right) = \sqrt{\left( X^s-X_{\text{A0}}+\dot{\Omega}_eY_{\text{A0}} \text{$\Delta $t}^s \right)^2+\left( Y^s-Y_{\text{A0}}-\dot{\Omega}_eX_{\text{A0}} \text{$\Delta $t}^s \right)^2+\left( Z^s-Z_{\text{A0}} \right)^2} 
+% \end{equation*}
+% 
+% The calculation of these parameters is done for all satellites we are interested in. Since we are computing four unknown parameters, the satellite lower limit is also four. More than four should only increase our accuracy assuming they aren't outliers. The result will be used to get more accurate coordinates for the receiver. 
+% 
+% The least squares method is used to calculate the corrections to the receiver position and system time of signal reception. Using values from different satellites, we solve, 
+% \begin{equation*}
+% 	\mathbf{L} - \mathbf{v} = \mathbf{AX} 
+% \end{equation*}
+% where $\mathbf{v}$ is a vector of unknown residuals, and the vector $\mathbf{X}$ is solved for with the LSQ solution, 
+% \begin{equation*}
+% 	\mathbf{X} = (\mathbf{A}^\text{T} \mathbf{A})^{-1} \mathbf{A}^\text{T} \mathbf{L} = [\Delta X~~\Delta Y~~\Delta Z~~\text{c} \delta \text{t}_\text{A} ]^\text{T} 
+% \end{equation*}
+% where $\mathbf{A}$ and $\mathbf{L}$ represent 
+% \begin{align*}
+% 	\mathbf{A} &= 
+% 	\begin{bmatrix}
+% 		a_x^{(1)} & a_y^{(1)} & a_z^{(1)} &1 \\
+% 		\vdots &\vdots &\vdots &\vdots \\
+% 		a_x^{(n)} & a_y^{(n)} & a_z^{(n)} &1 \\
+% 	\end{bmatrix}
+% 	\\
+% 	\mathbf{L} &= 
+% 	\begin{bmatrix}
+% 		P_A(\tilde{t}_A)-\rho_{A0}^{(1)} + c \delta t_{L1}^1\\
+% 		\vdots \\
+% 		P_A(\tilde{t}_A)-\rho_{A0}^{(n)} + c \delta t_{L1}^n\\
+% 	\end{bmatrix}
+% \end{align*}
+% 
+% The new estimated coordinates are computed by adding onto the approximate receiver position given in the observation file. 
+% \begin{align*}
+% 	X_A &= X_{A0} + \Delta X \\
+% 	Y_A &= Y_{A0} + \Delta Y \\
+% 	Z_A &= Z_{A0} + \Delta Z \\
+% \end{align*}
+% 
+% Now the calculation of $\rho _{\text{A0}}^s\left(\tilde{t}_A\right)$, $\mathbf{L}$, $\mathbf{A}$ is done again using the updated receiver coordinates until the solution has converged. We say that the solution has converged if the following condition is fulfilled: $|(\text{v}^{\text{T}} \text{v})_i - (\text{v}^{\text{T}} \text{v})_{i-1}|< 1e-5$. The results fulfilling the convergence condition are given in Table~\ref{tab:receiverCoordinates}.
 
 % section methodology (end)

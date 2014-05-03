@@ -4,9 +4,57 @@
 \label{sec:results}
 
 % Present results from all steps you performed in the exercise. Images or tabular results should be included in this section. Describe and analyse the results and discuss the meaning and implications of the results. Answer the questions written in the lab instructions. Pay attention to the quality of input data and their significance for interpreting the reliability of results/conclusions.
-The results for the receiver position are given in Table~\ref{tab:receiverCoordinates}.  The results agree completely with the reference material given because both calculations used all of the 11 satellites available.  The PDOP value was calculated using,
+The results for the LSQ of equations is,
+\begin{equation}
+	\mathbf{X}(m) = \left[\begin{matrix}
+			$-0.03	$						\\	
+			$0.16	$						\\  	
+			$0.22	$						\\  	
+			$951566.01$						\\   	
+			$1014451.16$					\\   	
+			$-1138240.42$					\\  	
+			$-9347.42$						\\  	
+			$-1078921.56$					\\  	
+		\end{matrix}\right]
+	\label{eq:xMatrix}
+\end{equation} % (eq:xmatrix)
+\begin{equation}
+	\mathbf{L}(m)= \left[\begin{matrix}
+			$181077.04$ 					\\	
+			$193043.66$					\\  	
+			$-216600.08$					\\  	
+			$-1778.67$					\\   	
+			$-205312.07$					\\   	
+			$0.13$					\\  	
+			$-0.22$					\\  	
+			$-0.09$					\\  	
+		\end{matrix}\right]
+	\label{eq:lMatrix}
+\end{equation} % (eq:lmatrix)
+\begin{align}
+	\lambda \varphi &= 
+	\left[\begin{matrix}
+			$180848.77$ \\
+			$192567.29$ \\
+			$-216415.03$\\
+			$-2197.22$\\
+			$-204701.52$\\
+	\end{matrix}\right]
+	\label{eq:doubleDiffa} \\
+	P &=  
+	\left[\begin{matrix}
+		$-228.14$\\
+		$-476.60$\\
+		$184.96$\\
+		$-418.71$\\
+		$610.13$\\
+	\end{matrix}\right]
+	\label{eq:doubleDiffb}
+\end{align}
+
+.  The results agree completely with the reference material given because both calculations used all of the 11 satellites available.  The PDOP value was calculated using,
 \begin{equation*}
 	PDOP = \sqrt{\sigma_x^2 + \sigma_y^2 + \sigma_z^2}
 \end{equation*}
-% \input{Tables/finalResults.tex}
+\input{Tables/tables.tex}
 % section results (end)
