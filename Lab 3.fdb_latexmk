@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex Lab 3"] 1399132244 "Lab 3.aux" "Lab 3.bbl" "Lab 3" 1399132246
+["bibtex Lab 3"] 1399230862 "Lab 3.aux" "Lab 3.bbl" "Lab 3" 1399230864
   "/usr/local/texlive/2013/texmf-dist/bibtex/bst/IEEEtran/IEEEtran.bst" 1222816716 59506 016987d9be15acf51cdd7252d40ecec2 ""
-  "Lab 3.aux" 1399132245 2125 6f6abd873c007d2637cc1aafe15d8a76 ""
+  "Lab 3.aux" 1399230863 2286 b5507fe9cc759cb74f491c2fcc01f097 ""
   "Lab 3.bcf" 0 -1 0 ""
   "My_Book.bib" 1399121623 2293 0d0bae43880e5be72cf12a8c07afc2c9 ""
   (generated)
   "Lab 3.bbl"
   "Lab 3.blg"
-["pdflatex"] 1399132245 "Lab 3.tex" "Lab 3.pdf" "Lab 3" 1399132246
+["pdflatex"] 1399230862 "Lab 3.tex" "Lab 3.pdf" "Lab 3" 1399230864
   "/usr/local/texlive/2013/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2013/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2013/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -94,14 +94,15 @@
   "/usr/local/texlive/2013/texmf-var/web2c/pdftex/pdflatex.fmt" 1369923264 3827029 ad4432546849f432c3154779662c76c8 ""
   "/usr/local/texlive/2013/texmf.cnf" 1369923207 577 cbc827f6294276973a1952e86e8ad73a ""
   "Code/Lab3Calculations.tex" 1399123658 3948 00bb62cee389fb02eb06b2c2e0b0c2d6 ""
-  "Lab 3.aux" 1399132245 2125 6f6abd873c007d2637cc1aafe15d8a76 ""
-  "Lab 3.bbl" 1399132245 1241 bd598ffa2f4456c081834277b6d1a21e "bibtex Lab 3"
-  "Lab 3.out" 1399132245 599 c5006a9d706ab2dbaedffaafc036acc8 ""
+  "Lab 3.aux" 1399230863 2286 b5507fe9cc759cb74f491c2fcc01f097 ""
+  "Lab 3.bbl" 1399230862 1001 821699be13b16a514c22bed83dbf6e5f "bibtex Lab 3"
+  "Lab 3.out" 1399230863 599 e90fefd7d78e706540e02eb7b79f7c99 ""
   "Lab 3.tex" 1399130111 2069 aab72bae333e95e60302bd8d47f4dfcf ""
   "Sections/Section1.tex" 1399123643 713 4481148ab43b91dfcc37abb8b1f5e2de ""
-  "Sections/Section2.tex" 1399132239 9231 7b855993121110dc19209557047a2152 ""
-  "Sections/Section3.tex" 1399131656 999 793eebc9ff520b9a75d201e8ff2ee8ac ""
-  "Sections/Section4.tex" 1399123663 2109 b069484a59b420d8b4029ed81df01ee0 ""
+  "Sections/Section2.tex" 1399133125 10137 0dd76980c1038a96c46f9c38e9bbd8d3 ""
+  "Sections/Section3.tex" 1399135655 2603 af96a636cda66a8ea70a29eeb0e89203 ""
+  "Sections/Section4.tex" 1399230853 1979 c27850ffc97ce9d61eb1c0fe0f6277ac ""
+  "Tables/tables.tex" 1399135649 475 f46da482d0b126e933068d63bb1af243 ""
   (generated)
   "Lab 3.out"
   "Lab 3.aux"

@@ -7,16 +7,17 @@
 \begin{itemize}
 	\item Are the results reasonable? Compare the results with your expectations.
 	
-	Yes the results are reasonable.  The final position of the receiver is very close to the approximate position and this is shown in Table~\ref{tab:receiverCoordinates}.  We also get very consistent results if we compute the same calculations for different epochs.
+	Yes, the results are reasonable.  The double difference observations are composed of the undifferenced phases and code pseudoranges, so we can expect the standard deviations to be greater than or equal to these as well.  For most receivers, $\sigma_{\Phi}=2~\text{mm}$ and $\sigma_P = 0.3~\text{m}$, so the double differences should give standard deviations greater than or equal to $0.3~\text{m}$.  
 	\item Can we draw any conclusion/implications from the results?  
 	
 	We can conclude that the approximate coordinates are very close to the true receiver position, even though we did not factor in ionospheric and tropospheric effects.  
 	\item Are results reliable and accurate?
 	
-	I believe the results are reliable and accurate because the $\sigma$ value is very small for all x,y,z and all 11 satellites were taken into account.  But the least squares method can give poor results if there are any outliers or the errors aren't Gaussian distributed.\cite{Garcia:1999:NMP:554354}  Looking at other epochs in the SPP Results, we can see that they also give approximately the same position for the receiver.
+	I believe the results are reliable and accurate because the $\sigma$ values is slightly greater than the change in X,Y, and Z.  We should also take into account the calculations that can be done with $\lambda_2$ values. % But the least squares method can give poor results if there are any outliers or the errors aren't Gaussian distributed.\cite{Garcia:1999:NMP:554354}
+	
 	\item Would it have been more appropriate to use another method? Does the method need to be further developed?
 	
-	I think it is only necessary to further develop this method if you needed a higher degree of accuracy.  This method could be further developed to take into account the ionospheric and tropospheric effects and factor in all the given epochs for the satellites.  I think it could me more appropriate to use the difference method is best used when you have more satellites and tropospheric and ionospheric effects are cancelled out in the equations.  This means our final solution should be more accurate using the difference method.
+	I think this method could be further developed by analyzing the double differences using different reference satellites.  For example, satellite 20 was used in this report, but we should also analyze using satellites 4,5,6,24, and 25 as reference satellites and compare the differences between each of their results.
 \end{itemize}
 
 % section analysis_and_discussion (end)

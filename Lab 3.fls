@@ -131,12 +131,13 @@ INPUT /usr/local/texlive/2013/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm
 INPUT /usr/local/texlive/2013/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
 INPUT /usr/local/texlive/2013/texmf-dist/fonts/tfm/public/cm/cmex10.tfm
 INPUT /usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map
-INPUT /usr/local/texlive/2013/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
+INPUT Sections/Section3.tex
+INPUT Sections/Section3.tex
 INPUT /usr/local/texlive/2013/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
 INPUT /usr/local/texlive/2013/texmf-dist/fonts/tfm/public/cm/cmbx8.tfm
 INPUT /usr/local/texlive/2013/texmf-dist/fonts/tfm/public/cm/cmbx6.tfm
-INPUT Sections/Section3.tex
-INPUT Sections/Section3.tex
+INPUT Tables/tables.tex
+INPUT Tables/tables.tex
 INPUT Sections/Section4.tex
 INPUT Sections/Section4.tex
 INPUT /usr/local/texlive/2013/texmf-dist/tex/latex/base/omscmr.fd
